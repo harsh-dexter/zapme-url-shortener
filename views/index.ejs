@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="/styles/output.css" rel="stylesheet">
+  <title>URL Shortener</title>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8 text-center text-blue-600">URL Shortener</h1>
+    <form action="/shortUrls" method="POST" class="mb-8 flex justify-center">
+      <input required placeholder="Enter URL to shorten" type="url" name="fullUrl" id="fullUrl" class="flex-grow mr-2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300" type="submit">Shorten</button>
+    </form>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="py-3 px-4 text-left">Full URL</th>
+            <th class="py-3 px-4 text-left">Short URL</th>
+            <th class="py-3 px-4 text-left">Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% shortUrls.forEach(shortUrl => { %>
+            <tr class="border-b hover:bg-gray-50">
+              <td class="py-3 px-4"><a href="<%= shortUrl.full %>" class="text-blue-500 hover:text-blue-600"><%= shortUrl.full %></a></td>
+              <td class="py-3 px-4"><a href="<%= baseUrl %>/<%= shortUrl.short %>" class="text-green-500 hover:text-green-600"><%= baseUrl %>/<%= shortUrl.short %></a></td>
+              <td class="py-3 px-4"><%= shortUrl.clicks %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
