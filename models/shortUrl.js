@@ -9,7 +9,8 @@ const shortUrlSchema = new mongoose.Schema({
   short: {
     type: String,
     required: true,
-    default: () => nanoid(10)
+    default: () => nanoid(10),
+    index:true
   },
   clicks: {
     type: Number,
