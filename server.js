@@ -6,7 +6,7 @@ const app = express();
 const path = require('path');
 
 
-const BASE_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:5000';
+const BASE_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${process.env.PORT || 5000}`;
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -42,10 +42,14 @@ app.post('/shortUrls', async (req, res) => {
 app.get('/:shortUrl', async (req, res) => {
   const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
   if (shortUrl == null) return res.sendStatus(404);
-
   shortUrl.clicks++;
   await shortUrl.save();
-
+  
+  // Check if the full URL starts with http:// or https://
+  if (!/^https?:\/\//i.test(shortUrl.full)) {
+    shortUrl.full = 'http://' + shortUrl.full;
+  }
+  
   res.redirect(shortUrl.full);
 });
 
